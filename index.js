@@ -42,6 +42,20 @@ app.post("/login", async (req, res) => {
   // 🔹 success
   res.json({ message: "Login successful" });
 });
+app.post("/register", async (req, res) => {
+    const { email, password } = req.body;
+  
+    const existingUser = await User.findOne({ email });
+    if (existingUser) {
+      return res.json({ message: "User already exists" });
+    }
+  
+    const newUser = new User({ email, password });
+    await newUser.save();
+  
+    res.json({ message: "User registered successfully" });
+  });
+  
 
 // server
 const PORT = process.env.PORT || 5000;
